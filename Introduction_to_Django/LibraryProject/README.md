@@ -1,1 +1,0 @@
-This is a library projectand will contain several tasks
