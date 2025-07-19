@@ -1,5 +1,4 @@
-first_book = Book.objects.all()
-<!-- fetches all list of object -->
-
-first_book[0].delete()
+from bookshelf.models import Book
+first_book.delete()
+first_book.save()
 <!-- This deletes records of the first_book -->
