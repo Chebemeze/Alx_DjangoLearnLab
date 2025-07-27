@@ -1,11 +1,14 @@
 from LibraryProject.relationship_app.models import Book
 from LibraryProject.relationship_app.models import Library
 from .models import Librarian
+from .models import Author
 
-author= "Benjamin Franklin"
+author_name = "Benjamin Franklin"
+author = Author.objects.get(name=author_name)
 books = Book.objects.filter(author=author)
 for e in books:
   print(e.title)
+
 
 library_name = "Wheel of time"
 
