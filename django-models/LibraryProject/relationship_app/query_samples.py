@@ -2,8 +2,8 @@ from LibraryProject.relationship_app.models import Book
 from LibraryProject.relationship_app.models import Library
 from .models import Librarian
 
-author_name = "Benjamin Franklin"
-books = Book.objects.filter(author= author_name)
+author= "Benjamin Franklin"
+books = Book.objects.filter(author=author)
 for e in books:
   print(e.title)
 
