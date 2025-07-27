@@ -19,4 +19,4 @@ books = library.books.all()
 
 # because of the one to one relationship, it gets the liberian associated with the library object
 # with the help of a reverse attribute related_name = librarian
-librarian = library.librarian
+librarian = Librarian.objects.get(library=library)
