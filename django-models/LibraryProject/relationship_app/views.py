@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -20,3 +21,14 @@ class LibraryDetailView(DetailView):
     library = self.get_object()  # Retrieve the current book instance
     context['book'] = library.books.all()
     return context
+
+def register(request):
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('login')
+  else:
+    form = UserCreationForm()
+  context = {'form':form}
+  return render(request, 'relationship_app/register.html', context)
