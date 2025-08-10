@@ -44,12 +44,12 @@ def role_required(role_name):
 
 @role_required('Admin')
 def admin_view(request):
-  return render(request, 'admin_view.html')
+  return render(request, 'relationship_app/admin_view.html')
 
 @role_required('Librarian')
 def librarian_view(request):
-  return render(request, 'librarian_view.html')
+  return render(request, 'relationship_app/librarian_view.html')
 
 @role_required('Member')
 def member_view(request):
-  return render(request, 'member_view.html')
+  return render(request, 'relationship_app/member_view.html')
