@@ -4,6 +4,7 @@ from .models import Library
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 
@@ -33,3 +34,22 @@ def register(request):
     form = UserCreationForm()
   context = {'form':form}
   return render(request, 'relationship_app/register.html', context)
+
+# Setting up role based views based on UserProfile roles
+def role_required(role_name):
+  """Return a decorator that checks if the user has the given role."""
+  def check_role(user):
+    return user.is_authenticated and getattr(user.userprofile, 'role', None) == role_name
+  return user_passes_test(check_role)
+
+@role_required('Admin')
+def admin_view(request):
+  return render(request, 'admin_view.html')
+
+@role_required('Librarian')
+def librarian_view(request):
+  return render(request, 'librarian_view.html')
+
+@role_required('Member')
+def member_view(request):
+  return render(request, 'member_view.html')
