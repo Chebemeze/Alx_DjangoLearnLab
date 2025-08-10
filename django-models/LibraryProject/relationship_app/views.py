@@ -36,20 +36,25 @@ def register(request):
   return render(request, 'relationship_app/register.html', context)
 
 # Setting up role based views based on UserProfile roles
-def role_required(role_name):
-  """Return a decorator that checks if the user has the given role."""
-  def check_role(user):
-    return user.is_authenticated and getattr(user.userprofile, 'role', None) == role_name
-  return user_passes_test(check_role)
+def Admin_func(user):
+  return user.is_authenticated and getattr(user.userprofile, 'role', None) == 'Admin'
 
-@role_required('Admin')
+def Librarian_func(user):
+  return user.is_authenticated and getattr(user.userprofile, 'role', None) == 'Librarian'
+
+def Member_func(user):
+  return user.is_authenticated and getattr(user.userprofile, 'role', None) == 'Member'
+
+# @user_passes_test calls the various function to check if the user is logged
+# and if the user has the necessary role before rendering to the that necessary role.
+@user_passes_test(Admin_func)
 def admin_view(request):
   return render(request, 'relationship_app/admin_view.html')
 
-@role_required('Librarian')
+@user_passes_test(Librarian_func)
 def librarian_view(request):
   return render(request, 'relationship_app/librarian_view.html')
 
-@role_required('Member')
+@user_passes_test(Member_func)
 def member_view(request):
   return render(request, 'relationship_app/member_view.html')
