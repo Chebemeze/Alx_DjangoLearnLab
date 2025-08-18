@@ -1,5 +1,5 @@
-from LibraryProject.relationship_app.models import Book
-from LibraryProject.relationship_app.models import Library
+from LibraryProject.bookshelf.models import Book
+from LibraryProject.bookshelf.models import Library
 from .models import Librarian
 from .models import Author
 

@@ -1,10 +1,17 @@
 from django.contrib import admin
-from .models import Book
-
-class BookAdmin(admin.ModelAdmin):
-  list_display = ('title', 'author', 'publication_year')
-  search_fields = ('title', 'author')
-  list_filter = ('title', 'author')
+from .models import Author, Book, Library, Librarian, UserProfile, CustomUser
 
 # Register your models here.
-admin.site.register(Book, BookAdmin)
+
+
+class ModelAdmin(admin.ModelAdmin):
+  list_display = ('username', 'email', 'password', 'date_of_birth', 'profile_photo')
+  search_fields = ('username', 'date_of_birth')
+  list_filter = ('username', 'date_of_birth')
+
+admin.site.register(CustomUser, ModelAdmin)
+admin.site.register(Author)
+admin.site.register(Book)
+admin.site.register(Library)
+admin.site.register(Librarian)
+admin.site.register(UserProfile)
