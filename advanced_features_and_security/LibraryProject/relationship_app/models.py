@@ -88,7 +88,7 @@ class CustomUserManager(BaseUserManager):
 
     email= self.normalize_email(email)
     # converts email to lowercase
-    user = self.model(username=username, email=email, **extra_fields)
+    user = self.model(username=username, email= email, **extra_fields)
     # creates an object called user from the cusromUser model
     user.set_password(password)  
     # ensures that a hashed password is stored
