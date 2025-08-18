@@ -1,0 +1,1 @@
+This is a new library project that will contain tasks
