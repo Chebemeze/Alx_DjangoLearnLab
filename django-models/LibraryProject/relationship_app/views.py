@@ -64,7 +64,7 @@ def member_view(request):
   return render(request, 'relationship_app/member_view.html')
 
 # creating views to check the permission of a user before
-# granting them various access to add, update and change book
+# granting them various access to add, update and delete book
 
 # ADD a book
 @permission_required ('relationship_app.can_add_book', raise_exception= False)
