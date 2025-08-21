@@ -117,3 +117,16 @@ class CustomUser(AbstractUser):
 
   objects = CustomUserManager()
   # links customUserManager to customerUser model. customUserManager manages customerUser.
+
+# Creating a new model called Mechanical Textbooks to test permission and Groups on
+class Mechanical_Texbook(models.Model):
+  title = models.CharField(max_length=200)
+  author = models.ForeignKey(Author, on_delete = models.CASCADE)
+
+  class Meta:
+    permissions = [
+      ("can_view", "can view mechanical books"),
+      ("can_create", "can create mechanical books"),
+      ("can_edit", "can edit mechanical books"),
+      ("can_delete", "can delete mechanical books"),
+    ]

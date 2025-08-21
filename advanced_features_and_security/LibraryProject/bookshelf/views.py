@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book
+from .models import Book, Mechanical_Texbook
 from .models import Library
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import permission_required
-from .forms import BookForm
+from .forms import BookForm, MechanicalForm
 
 
 
@@ -66,10 +66,10 @@ def member_view(request):
 # creating views to check the permission of a user before
 # granting them various access to add, update and delete book
 
-# ADD a book
+# ADD a Book
 @permission_required ('bookshelf.can_add_book', raise_exception= False)
-# raise_exception = False will return a 403 forbidden error
-#  if the user doesn't have permission
+# raise_exception = False will enable user to be redirected to the login page
+#  if the user doesn't have permission whether or not they are logged in
 def add_book(request):
   if request.method == 'POST':
     form = BookForm(request.POST)
@@ -88,7 +88,7 @@ def add_book(request):
 def edit_book(request, pk):
   book = get_object_or_404(Book, pk = pk)
   # gets a book using its ID
-  if request.methos == 'POST':
+  if request.method == 'POST':
     form = BookForm(request.POST, instance = book)
     # instance = book used here ensures that a particular 'book'
     # is edited instead of creating a new one
@@ -107,7 +107,61 @@ def delete_book(request, pk):
   if request.method == 'POST':
     book.delete()
     return redirect('list_book')
-  return render(request, 'bookshelf/confirm_delete.html', {'boook':book})
+  return render(request, 'bookshelf/confirm_delete.html', {'book':book})
 # the last return used automatically handles GET request and
 # direct it back to the delete_book() to delete the book because now
 # request.method == 'POST'
+
+
+# The below decorators and methods will handle the view of
+# Mechanical_Textbooks for group such as Editors, viewers, and Admins
+# Creates a Mechanical book
+@permission_required('bookshelf.can_create', raise_exception= True)
+# raise_exception = True will display error 403
+#  if the user doesn't have permission
+def create_mechbook(request):
+  if request.method == 'POST':
+    form = MechanicalForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('list_mechbook')
+
+# else creates a case where POST == GET and an empty form is created
+  else:
+    form = MechanicalForm()
+  return render(request, 'bookshelf/book_form.html', {'form': form})
+
+def list_mechbook(request):
+  book = Mechanical_Texbook.objects.all()
+  return render(request, 'bookshelf/list_books.html', {'book':book})
+# View mechanical books
+@permission_required('bookshelf.can_view', raise_exception= True)
+def view_mechbook(request):
+  return redirect('list_mechbook')
+
+# Edit an existing Mechanical book
+@permission_required('bookshelf.can_edit', raise_exception= True)
+def edit_mechbook(request, pk):
+  book = get_object_or_404(Mechanical_Texbook, pk = pk)
+  # gets a book using its ID
+  if request.method == 'POST':
+    form = MechanicalForm(request.POST, instance = book)
+    # instance = book used here ensures that a particular 'book'
+    # is edited instead of creating a new one
+    if form.is_valid():
+      form.save()
+      return redirect('list_mechbook')
+  else:
+    form = MechanicalForm(instance = book)
+  return render(request, 'bookshelf/book_form.html', {'form': form})
+
+
+# Delete a Mechanical book
+@permission_required ('bookshelf.can_delete', raise_exception = True)
+def delete_mechbook(request, pk):
+  book = get_object_or_404(Mechanical_Texbook, pk=pk)
+  if request.method == 'POST':
+    book.delete()
+    return redirect('list_mechbook')
+  return render(request, 'bookshelf/confirm_delete.html', {'book':book})
+
