@@ -19,7 +19,7 @@ urlpatterns = [
   path('<int:pk>/delete_book', views.delete_book, name='delete_book'),
 
 
-  path('list_mechbook/', views.list_mechbook, name='list_mechbook'),
+  path('book_list/', views.book_list, name='book_list'),
   path('create_mechbook/', views.create_mechbook, name='create_mechbook'),
   path('view_mechbook/', views.view_mechbook, name='view_mechbook'),
   path('<int:pk>/edit_mechbook/', views.edit_mechbook, name='edit_mechbook'),

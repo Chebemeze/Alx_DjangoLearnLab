@@ -131,13 +131,13 @@ def create_mechbook(request):
     form = MechanicalForm()
   return render(request, 'bookshelf/book_form.html', {'form': form})
 
-def list_mechbook(request):
+def book_list(request):
   book = Mechanical_Texbook.objects.all()
   return render(request, 'bookshelf/list_books.html', {'book':book})
 # View mechanical books
 @permission_required('bookshelf.can_view', raise_exception= True)
 def view_mechbook(request):
-  return redirect('list_mechbook')
+  return redirect('book_list')
 
 # Edit an existing Mechanical book
 @permission_required('bookshelf.can_edit', raise_exception= True)
@@ -150,7 +150,7 @@ def edit_mechbook(request, pk):
     # is edited instead of creating a new one
     if form.is_valid():
       form.save()
-      return redirect('list_mechbook')
+      return redirect('book_list')
   else:
     form = MechanicalForm(instance = book)
   return render(request, 'bookshelf/book_form.html', {'form': form})
@@ -162,6 +162,5 @@ def delete_mechbook(request, pk):
   book = get_object_or_404(Mechanical_Texbook, pk=pk)
   if request.method == 'POST':
     book.delete()
-    return redirect('list_mechbook')
+    return redirect('book_list')
   return render(request, 'bookshelf/confirm_delete.html', {'book':book})
-
