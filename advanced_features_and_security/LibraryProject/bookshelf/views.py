@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, Mechanical_Texbook
+from .models import Book, Mechanical_Textbook
 from .models import Library
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import permission_required
-from .forms import BookForm, MechanicalForm
+from .forms import BookForm, MechanicalForm, ExampleForm
 
 
 
@@ -121,19 +121,19 @@ def delete_book(request, pk):
 #  if the user doesn't have permission
 def create_mechbook(request):
   if request.method == 'POST':
-    form = MechanicalForm(request.POST)
+    form = ExampleForm(request.POST)
     if form.is_valid():
       form.save()
-      return redirect('list_mechbook')
+      return redirect('book_list')
 
 # else creates a case where POST == GET and an empty form is created
   else:
-    form = MechanicalForm()
-  return render(request, 'bookshelf/book_form.html', {'form': form})
+    form = ExampleForm()
+  return render(request, 'bookshelf/form_example.html', {'form': form})
 
 def book_list(request):
-  book = Mechanical_Texbook.objects.all()
-  return render(request, 'bookshelf/list_books.html', {'book':book})
+  book = Mechanical_Textbook.objects.all()
+  return render(request, 'bookshelf/book_list.html', {'book':book})
 # View mechanical books
 @permission_required('bookshelf.can_view', raise_exception= True)
 def view_mechbook(request):
@@ -142,24 +142,24 @@ def view_mechbook(request):
 # Edit an existing Mechanical book
 @permission_required('bookshelf.can_edit', raise_exception= True)
 def edit_mechbook(request, pk):
-  book = get_object_or_404(Mechanical_Texbook, pk = pk)
+  book = get_object_or_404(Mechanical_Textbook, pk = pk)
   # gets a book using its ID
   if request.method == 'POST':
-    form = MechanicalForm(request.POST, instance = book)
+    form = ExampleForm(request.POST, instance = book)
     # instance = book used here ensures that a particular 'book'
     # is edited instead of creating a new one
     if form.is_valid():
       form.save()
       return redirect('book_list')
   else:
-    form = MechanicalForm(instance = book)
-  return render(request, 'bookshelf/book_form.html', {'form': form})
+    form = ExampleForm(instance = book)
+  return render(request, 'bookshelf/form_example.html', {'form': form})
 
 
 # Delete a Mechanical book
 @permission_required ('bookshelf.can_delete', raise_exception = True)
 def delete_mechbook(request, pk):
-  book = get_object_or_404(Mechanical_Texbook, pk=pk)
+  book = get_object_or_404(Mechanical_Textbook, pk=pk)
   if request.method == 'POST':
     book.delete()
     return redirect('book_list')

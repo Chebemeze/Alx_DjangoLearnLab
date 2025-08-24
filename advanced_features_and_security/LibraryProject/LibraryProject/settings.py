@@ -127,3 +127,19 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# Applying security measures to protect my app
+DEBUG = False
+# This prevents detailed error messages that might show sensitive information in browsers
+SECURE_BROWSER_XSS_FILTER = True
+# Enables browsers built in Xss(cross site scripting) security features
+# protects against the injection of malicious scripts
+X_FRAME_OPTIONS = "DENY"
+# Prevents the site from being loaded inside an <iframe>. prevents clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# stops browsers from trying to guess a files content type
+CSRF_COOKIE_SECURE = True
+# This ensures that csrf token is only transmitted via HTTPS
+# CSRF - cross site request forgery
+SESSION_COOKIE_SECURE = True
+# Protects session cookies from being intersepted over unencripted HTTP

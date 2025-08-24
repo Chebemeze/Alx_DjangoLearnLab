@@ -119,7 +119,7 @@ class CustomUser(AbstractUser):
   # links customUserManager to customerUser model. customUserManager manages customerUser.
 
 # Creating a new model called Mechanical Textbooks to test permission and Groups on
-class Mechanical_Texbook(models.Model):
+class Mechanical_Textbook(models.Model):
   title = models.CharField(max_length=200)
   author = models.ForeignKey(Author, on_delete = models.CASCADE)
 

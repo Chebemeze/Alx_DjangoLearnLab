@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Book, Library, Librarian, UserProfile, CustomUser, Mechanical_Texbook
+from .models import Author, Book, Library, Librarian, UserProfile, CustomUser, Mechanical_Textbook
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
@@ -37,7 +37,7 @@ class CustomUserAdmin(UserAdmin):
   def has_delete_permission(self, request, obj=None):
     return (request.user.has_perm("bookshelf.can_delete"))
 
-class CustomMechanical_Texbook(admin.ModelAdmin):
+class CustomMechanical_Textbook(admin.ModelAdmin):
   list_display = ('title',)
   search_fields = ('title',)
   list_filter = ('title',)
@@ -72,4 +72,4 @@ admin.site.register(Book)
 admin.site.register(Library)
 admin.site.register(Librarian)
 admin.site.register(UserProfile)
-admin.site.register(Mechanical_Texbook, CustomMechanical_Texbook)
+admin.site.register(Mechanical_Textbook, CustomMechanical_Textbook)
