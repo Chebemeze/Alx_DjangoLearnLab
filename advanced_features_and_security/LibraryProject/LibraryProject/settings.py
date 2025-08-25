@@ -151,6 +151,8 @@ SESSION_COOKIE_SECURE = True
 # Extra security measures
 SECURE_SSL_REDIRECT = True
 # redirrects all non HTTPS requests to HTTPS.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 SECURE_HSTS_SECONDS = 31536000
 # instructs browsers to only access a site via HTTPS for a specified time
 # in this case 31536000 means one year.
