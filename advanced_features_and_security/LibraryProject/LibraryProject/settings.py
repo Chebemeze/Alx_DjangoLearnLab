@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-h9uoh-!lo!apd1rug5wf4@zwz2&)2c3=8x@r4)@thve-)=dd$c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
 ]
+
+INSTALLED_APPS += ["sslserver"]
+# Adds sslserver to INSTALLED_APPS to enable https usage since DEBUG is now False
+INSTALLED_APPS += ["django_extensions"]
+# installs django extensions which has sslcontext to handle https for development
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,7 +134,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Applying security measures to protect my app
-DEBUG = False
 # This prevents detailed error messages that might show sensitive information in browsers
 SECURE_BROWSER_XSS_FILTER = True
 # Enables browsers built in Xss(cross site scripting) security features
@@ -143,3 +147,37 @@ CSRF_COOKIE_SECURE = True
 # CSRF - cross site request forgery
 SESSION_COOKIE_SECURE = True
 # Protects session cookies from being intersepted over unencripted HTTP
+
+# Extra security measures
+SECURE_SSL_REDIRECT = True
+# redirrects all non HTTPS requests to HTTPS.
+SECURE_HSTS_SECONDS = 31536000
+# instructs browsers to only access a site via HTTPS for a specified time
+# in this case 31536000 means one year.
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+# to include all subdomain in the HSTS policy and to allow preloading.
+
+# The below are cookie settings to ensure that cookies are sent throught HTTPS
+SESSION_COOKIE_SECURE = True
+# ensures cookies are only transmitted via HTTPS.
+CSRF_COOKIE_SECURE = True
+# ensure csrf cookies are only sent via HTTPS
+
+
+# After installing django-csp. we insclude the above codes so the site can
+# utilize csp headers in its response
+INSTALLED_APPS += ["csp"]
+# adds csp to installed apps
+MIDDLEWARE += ["csp.middleware.CSPMiddleware"]
+#Enforces csp policy 
+
+# Example policy:
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        # "script-src": ("'self'", "https://cdn.jsdelivr.net"),
+        # "style-src": ("'self'", "https://fonts.googleapis.com"),
+        # "font-src": ("'self'", "https://fonts.gstatic.com"),
+    }
+}
